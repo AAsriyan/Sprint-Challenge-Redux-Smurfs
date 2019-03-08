@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import Loader from "react-loader-spinner";
 import { connect } from "react-redux";
-import { getSmurfs, addSmurf, deleteSmurf } from "../actions";
+import { getSmurfs, addSmurf, deleteSmurf, updateSmurf } from "../actions";
 import SmurfsList from "./SmurfsList";
 import "./App.css";
 /*
@@ -52,6 +52,14 @@ class App extends Component {
   };
 
   render() {
+    if (this.props.fetchingSmurfs) {
+      return (
+        <div>
+          <Loader type="Puff" color="#000" height="200" width="200" />
+          <h2>LOADING THE BLUEST SMURFS...</h2>
+        </div>
+      );
+    }
     return (
       <div className="App">
         <h1>SMURFS! 2.0 W/ Redux</h1>
@@ -64,22 +72,28 @@ class App extends Component {
             type="text"
             name="name"
             value={this.state.name}
+            placeholder="Enter Name"
             onChange={this.handleFormChanges}
             autoComplete="off"
+            required
           />
           <input
             type="number"
             name="age"
             value={this.state.age}
+            placeholder="Enter Age"
             onChange={this.handleFormChanges}
             autoComplete="off"
+            required
           />
           <input
             type="text"
             name="height"
             value={this.state.height}
+            placeholder="Enter Height"
             onChange={this.handleFormChanges}
             autoComplete="off"
+            required
           />
           <button>Add Smurf</button>
         </form>
@@ -91,11 +105,12 @@ class App extends Component {
 const mapStateToProps = state => {
   console.log(state);
   return {
-    smurfs: state.smurfs
+    smurfs: state.smurfs,
+    fetchingSmurfs: state.fetchingSmurfs
   };
 };
 
 export default connect(
   mapStateToProps,
-  { getSmurfs, addSmurf, deleteSmurf }
+  { getSmurfs, addSmurf, deleteSmurf, updateSmurf }
 )(App);

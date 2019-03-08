@@ -1,5 +1,4 @@
 import axios from "axios";
-import { bindActionCreators } from "redux";
 
 /* 
   Action Types Go Here!
@@ -17,6 +16,10 @@ export const ADD_SMURF_FAILURE = "ADD_SMURF_FAILURE";
 export const DELETE_SMURF_REQUEST = "DELETE_SMURF_REQUEST";
 export const DELETE_SMURF_SUCCESS = "DELETE_SMURF_SUCCESS";
 export const DELETE_SMURF_FAILURE = "DELETE_SMURF_FAILURE";
+
+export const UPDATE_SMURF_REQUEST = "UPDATE_SMURF_REQUEST";
+export const UPDATE_SMURF_SUCCESS = "UPDATE_SMURF_SUCCESS";
+export const UPDATE_SMURF_FAILURE = "UPDATE_SMURF_FAILURE";
 
 /*
   For this project you'll need at least 2 action creators for the main portion,
@@ -49,7 +52,6 @@ export const addSmurf = newSmurf => dispatch => {
   axios
     .post("http://localhost:3333/smurfs", newSmurf)
     .then(res => {
-      console.log(res);
       dispatch({ type: ADD_SMURF_SUCCESS, payload: res.data });
     })
     .catch(err => {
@@ -62,10 +64,25 @@ export const deleteSmurf = id => dispatch => {
   axios
     .delete(`http://localhost:3333/smurfs/${id}`)
     .then(res => {
-      console.log(res);
       dispatch({ type: DELETE_SMURF_SUCCESS, payload: res.data });
     })
     .catch(err => {
       dispatch({ type: DELETE_SMURF_FAILURE, payload: err.response });
+    });
+};
+
+export const updateSmurf = (id, updatedSmurf) => dispatch => {
+  dispatch({ type: UPDATE_SMURF_REQUEST });
+  axios
+    .put(`http://localhost:3333/smurfs/${id}`, updatedSmurf)
+    .then(res => {
+      console.log(res.data);
+      dispatch({ type: UPDATE_SMURF_SUCCESS, payload: res.data });
+    })
+    .catch(err => {
+      dispatch({
+        type: UPDATE_SMURF_FAILURE,
+        payload: err.response.request.response
+      });
     });
 };

@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import Loader from "react-loader-spinner";
 import { connect } from "react-redux";
-import { getSmurfs, addSmurf } from "../actions";
+import { getSmurfs, addSmurf, deleteSmurf } from "../actions";
 import SmurfsList from "./SmurfsList";
 import "./App.css";
 /*
@@ -45,11 +45,20 @@ class App extends Component {
     });
   };
 
+  handleDeleteSmurf = (e, id) => {
+    e.preventDefault();
+
+    this.props.deleteSmurf(id);
+  };
+
   render() {
     return (
       <div className="App">
         <h1>SMURFS! 2.0 W/ Redux</h1>
-        <SmurfsList smurfs={this.props.smurfs} />
+        <SmurfsList
+          smurfs={this.props.smurfs}
+          handleDeleteSmurf={this.handleDeleteSmurf}
+        />
         <form onSubmit={this.handleAddSmurf}>
           <input
             type="text"
@@ -88,5 +97,5 @@ const mapStateToProps = state => {
 
 export default connect(
   mapStateToProps,
-  { getSmurfs, addSmurf }
+  { getSmurfs, addSmurf, deleteSmurf }
 )(App);

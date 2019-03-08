@@ -6,6 +6,10 @@ const Smurf = props => {
       <h2>{props.smurf.name}</h2>
       <p>{props.smurf.age}</p>
       <p>{props.smurf.height}</p>
+      <button onClick={e => props.handleDeleteSmurf(e, props.smurf.id)}>
+        Delete
+      </button>
+      <button>Update</button>
     </div>
   );
 };

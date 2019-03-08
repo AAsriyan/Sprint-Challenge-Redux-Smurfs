@@ -8,7 +8,10 @@ import {
   FETCH_SMURFS_FAILURE,
   ADD_SMURF_REQUEST,
   ADD_SMURF_SUCCESS,
-  ADD_SMURF_FAILURE
+  ADD_SMURF_FAILURE,
+  DELETE_SMURF_REQUEST,
+  DELETE_SMURF_SUCCESS,
+  DELETE_SMURF_FAILURE
 } from "../actions";
 
 /*
@@ -76,6 +79,25 @@ export default (state = initialState, action) => {
       return {
         ...state,
         addingSmurf: false,
+        error: action.payload
+      };
+
+    case DELETE_SMURF_REQUEST:
+      return {
+        ...state,
+        deletingSmurf: true,
+        error: null
+      };
+    case DELETE_SMURF_SUCCESS:
+      return {
+        ...state,
+        deletingSmurf: false,
+        smurfs: action.payload
+      };
+    case DELETE_SMURF_FAILURE:
+      return {
+        ...state,
+        deletingSmurf: false,
         error: action.payload
       };
     default:

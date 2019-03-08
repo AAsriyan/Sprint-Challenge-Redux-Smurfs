@@ -1,5 +1,5 @@
-const express = require('express');
-const cors = require('cors');
+const express = require("express");
+const cors = require("cors");
 const port = 3333;
 
 const server = express();
@@ -14,22 +14,23 @@ const sendUserError = (msg, res) => {
 
 let smurfs = [
   {
-    name: 'Brainey',
+    id: 1,
+    name: "Brainey",
     age: 200,
-    height: '5cm'
+    height: "5cm"
   }
 ];
-server.get('/smurfs', (req, res) => {
+server.get("/smurfs", (req, res) => {
   res.json(smurfs);
 });
-let smurfId = 0;
+let smurfId = 2;
 
-server.post('/smurfs', (req, res) => {
+server.post("/smurfs", (req, res) => {
   const { name, age, height } = req.body;
-  const newSmurf = { name, age, height, id: smurfId };
+  const newSmurf = { name, age, height, id: getSmurfId() };
   if (!name || !age || !height) {
     return sendUserError(
-      'Ya gone did smurfed! Name/Age/Height are all required to create a smurf in the smurf DB.',
+      "Ya gone did smurfed! Name/Age/Height are all required to create a smurf in the smurf DB.",
       res
     );
   }
@@ -44,11 +45,11 @@ server.post('/smurfs', (req, res) => {
   }
 
   smurfs.push(newSmurf);
-  smurfId++;
+  //smurfId++;
   res.json(smurfs);
 });
 
-server.put('/smurfs/:id', (req, res) => {
+server.put("/smurfs/:id", (req, res) => {
   const { id } = req.params;
   const { name, age, height } = req.body;
   const findSmurfById = smurf => {
@@ -56,7 +57,7 @@ server.put('/smurfs/:id', (req, res) => {
   };
   const foundSmurf = smurfs.find(findSmurfById);
   if (!foundSmurf) {
-    return sendUserError('No Smurf found by that ID', res);
+    return sendUserError("No Smurf found by that ID", res);
   } else {
     if (name) foundSmurf.name = name;
     if (age) foundSmurf.age = age;
@@ -65,7 +66,7 @@ server.put('/smurfs/:id', (req, res) => {
   }
 });
 
-server.delete('/smurfs/:id', (req, res) => {
+server.delete("/smurfs/:id", (req, res) => {
   const { id } = req.params;
   const foundSmurf = smurfs.find(smurf => smurf.id == id);
 
@@ -74,9 +75,13 @@ server.delete('/smurfs/:id', (req, res) => {
     smurfs = smurfs.filter(smurf => smurf.id != id);
     res.status(200).json(smurfs);
   } else {
-    sendUserError('No smurf by that ID exists in the smurf DB', res);
+    sendUserError("No smurf by that ID exists in the smurf DB", res);
   }
 });
+
+function getSmurfId() {
+  return smurfId++;
+}
 
 server.listen(port, err => {
   if (err) console.log(err);
